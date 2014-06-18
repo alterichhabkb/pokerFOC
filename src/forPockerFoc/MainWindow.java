@@ -68,7 +68,7 @@ public class MainWindow extends JFrame {
 	
 	
 	
-	//TODO abklären wie sichdie PlayerData geholt werden sollen....String und Array in den Kostruktor??
+	//TODO abkl��ren wie sichdie PlayerData geholt werden sollen....String und Array in den Kostruktor??
 	public MainWindow(){
 		super("FOC Poker");
 		//get Timer from Class Countdown
@@ -88,10 +88,6 @@ public class MainWindow extends JFrame {
 		MainWindow.setOtherPlayer04("Player04" + " " + 1000);
 		MainWindow.setOtherPlayer05("Player05" + " " + 1000);
 		
-	}
-	
-	public void closeWindow(){
-		dispose();
 	}
 	
 	
@@ -116,20 +112,20 @@ public class MainWindow extends JFrame {
 		options = new JMenu("Options");
 		logOut = new JMenuItem("Log out");
 		logOut.setActionCommand("logOut");
-		logOut.addActionListener(new MenuBarHandler());
+		logOut.addActionListener(new MenuBarHandler(this));
 		exit = new JMenuItem("Exit");
 		exit.setActionCommand("exit");
-		exit.addActionListener(new MenuBarHandler());
+		exit.addActionListener(new MenuBarHandler(this));
 		options.add(logOut);
 		options.add(exit);
 		//Help
 		help = new JMenu("Help");
 		rules = new JMenuItem("Game Rules");
 		rules.setActionCommand("rules");
-		rules.addActionListener(new MenuBarHandler());
+		rules.addActionListener(new MenuBarHandler(this));
 		hands = new JMenuItem("Hands");
 		hands.setActionCommand("hands");
-		hands.addActionListener(new MenuBarHandler());
+		hands.addActionListener(new MenuBarHandler(this));
 		help.add(rules);
 		help.add(hands);
 		//add to MenuBar
@@ -187,6 +183,18 @@ public class MainWindow extends JFrame {
 		betButton.setMinimumSize(new Dimension(50, 30));
 		raiseButton.setMinimumSize(new Dimension(50, 30));
 		foldButton.setMinimumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+		//set ActionCommand for Buttons
+		checkButton.setActionCommand("checkButton");
+		callButton.setActionCommand("callButton");
+		betButton.setActionCommand("betButton");
+		raiseButton.setActionCommand("raiseButton");
+		foldButton.setActionCommand("foldButton");
+		//add ActionListener fpr Button(PlayerActivityHander=>EventHandler)
+		checkButton.addActionListener(new PlayerActivityHandler());
+		callButton.addActionListener(new PlayerActivityHandler());
+		betButton.addActionListener(new PlayerActivityHandler());
+		raiseButton.addActionListener(new PlayerActivityHandler());
+		foldButton.addActionListener(new PlayerActivityHandler());
 		buttonPanel.add(timer);
 		buttonPanel.add(checkButton);
 		buttonPanel.add(callButton);
@@ -263,7 +271,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		MainWindow m = new MainWindow();
+		new MainWindow();
 
 	}
 
