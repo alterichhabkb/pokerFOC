@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 import forPockerFoc.ExitAskWindow;
+import forPockerFoc.RulesWindow;
 import forPockerFoc.SelectionWindow;
 
 public class MenuBarHandler implements ActionListener {
@@ -31,7 +32,7 @@ public class MenuBarHandler implements ActionListener {
 			
 		}
 		else if(e.getActionCommand() == "rules"){
-			System.out.println("rules");
+			new RulesWindow();
 		}
 		else if(e.getActionCommand() == "hands"){
 			System.out.println("hands");

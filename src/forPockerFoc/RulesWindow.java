@@ -1,9 +1,14 @@
 package forPockerFoc;
 
-import java.awt.FlowLayout;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import domain.Eingabe;
 
@@ -13,40 +18,52 @@ public class RulesWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = -2248538888699109440L;
 	
-	private JScrollPane contentPanel;
-	private final JTextArea gameRules;
-	private final FlowLayout rulesWindowLayout;
+	
 	private String gameRulesText;
+	private JTextArea textArea;
+	private JPanel contentPanel;
+	private JScrollPane scrollPanel;
+	
 	
 	public RulesWindow(){
+		super("Poker Rules");
+		this.getRules();
+		textArea = new JTextArea(gameRulesText);
+		textArea.setEditable(false);
+		textArea.setRows(50);
+		textArea.setColumns(50);
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
+		contentPanel = new JPanel();
+		contentPanel.add(textArea);
+		scrollPanel = new JScrollPane(contentPanel, 
+	            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+	            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setSize(650, 700);
 		
-		//get GameRules from a .txt
-		try {
-			gameRulesText = "";
-		} catch (Exception e) {
-			System.err.println("ERROR! cant get GameRulesText please add correct part!");
-			gameRulesText= Eingabe.readString();
-		}
-		//init TextArea
-		gameRules = new JTextArea(gameRulesText);
-		//init  JScrollPane with textArea(gameRules) as param
-		contentPanel = new JScrollPane(gameRules);
 		
-		
-		rulesWindowLayout = new FlowLayout();
-		rulesWindowLayout.setAlignment(FlowLayout.CENTER);
-		this.setLayout(rulesWindowLayout);
-		this.add(contentPanel);
 		this.setSize(600, 700);
-		//this.setResizable(false);
+		this.setResizable(false);
+		this.add(scrollPanel);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	private void getRules(){
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("/Users/fabianRedecker/Documents/HS - Bremen/Semester 2/Programmieren 2/pokerFOC/src/data/rules_pokerFOC.txt"));
+			String aline;
+			while ((aline = br.readLine()) != null) {
+            	gameRulesText += aline + System.getProperty("line.separator");  
+           }
+            br.close();
+			
+		} catch (Exception e) {
+			System.err.println("ERROR cant read gameRule please sign location");
+			gameRulesText = Eingabe.readString();
+		}
+	}	
 	
-	public static void main(String[] args) {
-		new RulesWindow();
-	}
-
 }
