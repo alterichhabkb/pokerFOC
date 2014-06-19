@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-import domain.Eingabe;
+
 
 public class RulesWindow extends JFrame {
 	/**
@@ -30,8 +30,10 @@ public class RulesWindow extends JFrame {
 		this.getRules();
 		textArea = new JTextArea(gameRulesText);
 		textArea.setEditable(false);
+		//set max rows & culumns
 		textArea.setRows(50);
 		textArea.setColumns(50);
+		//set automatic wordwrap && only whole words are alowed to wrap
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		contentPanel = new JPanel();
@@ -53,7 +55,8 @@ public class RulesWindow extends JFrame {
 	private void getRules(){
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("/Users/fabianRedecker/Documents/HS - Bremen/Semester 2/Programmieren 2/pokerFOC/src/data/rules_pokerFOC.txt"));
+			//BufferedReader br = new BufferedReader(new FileReader("/Users/fabianRedecker/Documents/HS - Bremen/Semester 2/Programmieren 2/pokerFOC/src/data/rules_pokerFOC.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("bin/data/rules_pokerFOC.txt"));
 			String aline;
 			while ((aline = br.readLine()) != null) {
             	gameRulesText += aline + System.getProperty("line.separator");  
@@ -61,8 +64,8 @@ public class RulesWindow extends JFrame {
             br.close();
 			
 		} catch (Exception e) {
-			System.err.println("ERROR cant read gameRule please sign location");
-			gameRulesText = Eingabe.readString();
+			System.err.println("ERROR cant read gameRules");
+			e.toString();
 		}
 	}	
 	

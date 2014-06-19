@@ -1,9 +1,9 @@
 package domain;
 
-import java.awt.Frame;
+
 
 import ui.CUI;
-import ui.GUI.MainFrame;
+
 
 /**
  * 
@@ -12,7 +12,7 @@ import ui.GUI.MainFrame;
  */
 public class PokerMain {
 	
-	private static final String MainFrame = null;
+	
 
 	public static void main(String[] args) {
 		// CUI
