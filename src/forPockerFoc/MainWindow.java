@@ -14,6 +14,8 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import valueObjects.Player;
+
 
 public class MainWindow extends JFrame {
 
@@ -21,6 +23,12 @@ public class MainWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 8131808332147849819L;
+	
+	//chatWindow lightweight components
+	private JTextArea showArea;
+	private JTextArea sendArea;
+	private JButton senderButton;
+	
 	//MenuBar
 	private JMenuBar menuList;
 	//Options
@@ -31,9 +39,6 @@ public class MainWindow extends JFrame {
 	private JMenu help;
 	private JMenuItem rules;
 	private JMenuItem hands;
-	
-	
-	
 	
 	//BorderColors
 	private Border blackline  = BorderFactory.createLineBorder(Color.black);
@@ -61,27 +66,35 @@ public class MainWindow extends JFrame {
 	public static JLabel otherPlayer04 = new JLabel();
 	public static JLabel otherPlayer05 = new JLabel();
 	
-	//Panels
+	//Panels for BorderLayout
 	private JPanel buttonPanel;
 	private JPanel mainField;
 	private JPanel otherPlayersAtTable;
+	private JSplitPane eastSection;
+	//Pannels for Chatwindow
+	private JPanel chatPanel;
+	private JPanel showPanel;
+	private JSplitPane chatWindowPanel;
+	private JScrollPane chatShowScrollPane;
 	
 	
+	private final Player currentPlayer;
 	
-	//TODO abkl��ren wie sichdie PlayerData geholt werden sollen....String und Array in den Kostruktor??
-	public MainWindow(){
+	public MainWindow(Player p){
 		super("FOC Poker");
+		this.currentPlayer = p;
+		
 		//get Timer from Class Countdown
 		timer = countdown.getTimerIcon();
-		
-		this.initMenuBar();
+		this.initChat();
 		this.initOtherPlayersAtTable();
+		this.initMenuBar();
 		this.initButtonPanel();
 		this.initMainfield();
 		this.init(true);
 		
-		
-		this.setOwnPlayerInfo("my Self" + " " + 250292);
+		//only for testing.....
+		this.setOwnPlayerInfo(currentPlayer.getName() + "\n" + currentPlayer.getChipNumber());
 		MainWindow.setOtherPlayer01("Player01" + " " + 1000);
 		MainWindow.setOtherPlayer02("Player02" + " " + 1000);
 		MainWindow.setOtherPlayer03("Player03" + " " + 1000);
@@ -97,14 +110,15 @@ public class MainWindow extends JFrame {
 		this.add(menuList, BorderLayout.NORTH);
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		this.add(mainField, BorderLayout.CENTER);
-		this.add(otherPlayersAtTable, BorderLayout.EAST);
-		this.setSize(1050, 700);
+		this.add(eastSection, BorderLayout.EAST);
+		this.setSize(1100, 900);
 		//this.setResizable(false);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(windowVisible);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	//init MenuBar
 	private void initMenuBar(){
 		//MenuBar
 		menuList = new JMenuBar();
@@ -132,8 +146,47 @@ public class MainWindow extends JFrame {
 		menuList.add(options);
 		menuList.add(help);
 	}
-		
+	
+private void initChat(){
+		//init showArea
+		showArea = new JTextArea();
+		showArea.setEditable(false);
+		//showArea.setSize(500, 500);
+		showArea.setColumns(15);
+		showArea.setRows(40);
+		//if a word is to long to write in the same line the word will be written in next line
+		showArea.setWrapStyleWord(true);
+		showArea.setLineWrap(true);
+		//init sendArea
+		sendArea = new JTextArea();
+		sendArea.setWrapStyleWord(true);
+		sendArea.setLineWrap(true);
+		//init send Button + actionListener
+		senderButton = new JButton("send");
+		senderButton.setActionCommand("send");
+		senderButton.addActionListener(new ChatHandler(this, this.currentPlayer));
+		//init chatPanel
+		chatPanel = new JPanel();
+		chatPanel.add(showArea);
+		//add sendAria and Sender Button in show Pannel(after init showPanel)
+		showPanel = new JPanel(new GridLayout(2,1));
+		showPanel.add(sendArea);
+		showPanel.add(senderButton);
+		//init ScrollPane and add Chatpanel
+		chatShowScrollPane = new JScrollPane(chatPanel, 
+	            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+	            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		//init ChatWindowPanel (JSpltPane) Top: chatShowScrollPane Buttom: chatsendScrollPane
+		chatWindowPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		chatWindowPanel.setSize(400,700);
+		chatWindowPanel.setDividerLocation(500);
+		chatWindowPanel.setTopComponent(chatShowScrollPane);
+		chatWindowPanel.setBottomComponent(showPanel);
+	}
+	
+	//init Other Players at Table
 	private void initOtherPlayersAtTable(){
+		
 		ownPlayerInfo = new JLabel();
 		otherPlayersAtTable = new JPanel();
 		otherPlayersAtTable.setLayout(new GridLayout(7,1));
@@ -157,10 +210,16 @@ public class MainWindow extends JFrame {
 		otherPlayersAtTable.add(otherPlayer03);
 		otherPlayersAtTable.add(otherPlayer04);
 		otherPlayersAtTable.add(otherPlayer05);
+		//init eastSection (JSpitPane) top: otherPlayersAtTable Buttom: ChatWindowPannel
+		eastSection = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		eastSection.setDividerLocation(300);
+		eastSection.setSize(400, 700);
+		eastSection.setTopComponent(otherPlayersAtTable);
+		eastSection.setBottomComponent(chatWindowPanel);
 		
 	}
 	
-	
+	//init Mainfield (Table pictue)
 	private void initMainfield(){
 		mainField = new JPanel();
 		mainField.setSize(200, 700);
@@ -270,9 +329,30 @@ public class MainWindow extends JFrame {
 		otherPlayer05.setText(text);
 	}
 	
+	//getter & setter for chat Window
+	public void setChatText(String text){
+		String oldText;
+		oldText = showArea.getText();
+		if(! oldText.equals("")){
+			showArea.setText(oldText + "\n" +text);
+		}else{
+			showArea.setText(text);
+		}	
+	}
+	
+	public String getChatText(){
+		String giveBack;
+		giveBack = sendArea.getText();
+		return giveBack;
+	}
+	//setter for sendArea
+	public void setSendAreaText(String text){
+		sendArea.setText(text);
+	}
+	
 	public static void main(String[] args) {
-		new MainWindow();
-
+		/*MainWindow m =*/ new MainWindow(new Player(1,"BigF327", 2500, "password"));
+	
 	}
 
 }
