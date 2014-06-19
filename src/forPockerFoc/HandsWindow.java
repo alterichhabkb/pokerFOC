@@ -1,12 +1,12 @@
 package forPockerFoc;
-
-import java.awt.FlowLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
-import domain.Eingabe;
+import javax.swing.ScrollPaneConstants;
 
 public class HandsWindow extends JFrame {
 
@@ -14,42 +14,50 @@ public class HandsWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -7752538228392116434L;
-	
-	private JScrollPane contentPanel;
-	private final JTextArea handsTextArea;
-	private final FlowLayout handsWindowLayout;
-	private String handsText;
-	
+	private String hands;
+	private JTextArea handsArea;
+	private JPanel contentPanel;
+	private JScrollPane scrollPanel;
+
 	public HandsWindow(){
+		super("List of Hands");
+		this.getHandsTXT();
 		
-		//get Hands from a .txt
-		try {
-			handsText = "";
-		} catch (Exception e) {
-			System.err.println("ERROR! cant get GameRulesText please add correct part!");
-			handsText= Eingabe.readString();
-		}
+		handsArea = new JTextArea(hands);
+		handsArea.setEditable(false);
+		handsArea.setRows(80);
+		handsArea.setColumns(80);
+		handsArea.setWrapStyleWord(true);
+		handsArea.setLineWrap(true);
 		
-		//init TextArea withe String HandsText
-		handsTextArea = new JTextArea(handsText);
-		//init  JScrollPane with textArea(hadnsTextArea) as param
-		contentPanel = new JScrollPane(handsTextArea);
-		
-		
-		handsWindowLayout = new FlowLayout();
-		handsWindowLayout.setAlignment(FlowLayout.CENTER);
-		this.setLayout(handsWindowLayout);
-		this.add(contentPanel);
-		this.setSize(600, 700);
-		//this.setResizable(false);
+		contentPanel = new JPanel();
+		contentPanel.add(handsArea);
+		scrollPanel = new JScrollPane(contentPanel, 
+	            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+	            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setSize(650, 700);
+	
+		this.setSize(650, 700);
+		this.setResizable(false);
+		this.add(scrollPanel);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
 	}
-
-	public static void main(String[] args) {
-		new HandsWindow();
-
+	
+	private void getHandsTXT(){
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("bin/data/listOfHands_pokerFOC.txt"));
+			String aline;
+			while ((aline = br.readLine()) != null) {
+            	hands += aline + System.getProperty("line.separator");  
+           }
+            br.close();
+			
+		} catch (Exception e) {
+			System.err.println("ERROR cant read gameRules");
+			e.toString();
+		}
 	}
-
 }
