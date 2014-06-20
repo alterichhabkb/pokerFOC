@@ -48,7 +48,7 @@ public class MainWindow extends JFrame {
 	private Image mainImage;
 	
 	//Timer
-	private Countdown countdown = new Countdown(120);
+	private Countdown countdown = new Countdown(5);
 	
 	//Buttons
 	private JTextField timer;
@@ -86,6 +86,7 @@ public class MainWindow extends JFrame {
 	public MainWindow(Player p){
 		super("FOC Poker");
 		this.currentPlayer = p;
+		
 		
 		//get Timer from Class Countdown
 		timer = countdown.getTimerIcon();

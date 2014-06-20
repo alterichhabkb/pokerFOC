@@ -21,6 +21,7 @@ public class Countdown {
 		timerIcon = new JTextField();
 		timerIcon.setEditable(false);
 		timerIcon.setText("time befor fold" + seconds);
+	
 		
 		TimerTask task = new TimerTask() {
 			@Override
@@ -32,9 +33,10 @@ public class Countdown {
 						timerIcon.setFont(redOne);
 						timerIcon.setForeground(Color.RED);
 					}
-				}
+				}			
 				if (seconds == 0) {
 					timerIcon.setText("Time is over!");
+					
 					//TODO next Player
 				}
 			}
