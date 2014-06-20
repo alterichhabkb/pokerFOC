@@ -16,12 +16,10 @@ public class Player implements Comparable<Player>{
 	private int actualBet;
 	private Card[] hand = new Card[2];
 	
+	
 	//Attribute for WinRank
 	private int result = 0;
 	private int handRank = 0;
-	
-
-
 	private int highCard = 0;
 	
 	// Constructor Player

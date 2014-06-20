@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import valueObjects.Cards;
 import valueObjects.Player;
 
 
@@ -77,8 +78,10 @@ public class MainWindow extends JFrame {
 	private JSplitPane chatWindowPanel;
 	private JScrollPane chatShowScrollPane;
 	
-	
+	//Player far a MainWindow
 	private final Player currentPlayer;
+	Cards playerCardOne;
+	Cards playerCardTwo;
 	
 	public MainWindow(Player p){
 		super("FOC Poker");
@@ -92,6 +95,10 @@ public class MainWindow extends JFrame {
 		this.initButtonPanel();
 		this.initMainfield();
 		this.init(true);
+		
+		//TODO handle cards
+		playerCardOne= Cards.getACard();
+		playerCardTwo= Cards.getACard();
 		
 		//only for testing.....
 		this.setOwnPlayerInfo(currentPlayer.getName() + "\n" + currentPlayer.getChipNumber());
@@ -111,7 +118,7 @@ public class MainWindow extends JFrame {
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		this.add(mainField, BorderLayout.CENTER);
 		this.add(eastSection, BorderLayout.EAST);
-		this.setSize(1100, 900);
+		this.setSize(1150, 900);
 		//this.setResizable(false);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(windowVisible);
@@ -122,8 +129,10 @@ public class MainWindow extends JFrame {
 	private void initMenuBar(){
 		//MenuBar
 		menuList = new JMenuBar();
+		menuList.setBackground(Color.DARK_GRAY);
 		//options
 		options = new JMenu("Options");
+		options.setBackground(Color.DARK_GRAY);
 		logOut = new JMenuItem("Log out");
 		logOut.setActionCommand("logOut");
 		logOut.addActionListener(new MenuBarHandler(this));
@@ -134,6 +143,7 @@ public class MainWindow extends JFrame {
 		options.add(exit);
 		//Help
 		help = new JMenu("Help");
+		help.setBackground(Color.DARK_GRAY);
 		rules = new JMenuItem("Game Rules");
 		rules.setActionCommand("rules");
 		rules.addActionListener(new MenuBarHandler(this));
@@ -147,7 +157,7 @@ public class MainWindow extends JFrame {
 		menuList.add(help);
 	}
 	
-private void initChat(){
+	private void initChat(){
 		//init showArea
 		showArea = new JTextArea();
 		showArea.setEditable(false);
@@ -214,6 +224,7 @@ private void initChat(){
 		eastSection = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		eastSection.setDividerLocation(300);
 		eastSection.setSize(400, 700);
+		eastSection.setBorder(blackline);
 		eastSection.setTopComponent(otherPlayersAtTable);
 		eastSection.setBottomComponent(chatWindowPanel);
 		
@@ -222,7 +233,7 @@ private void initChat(){
 	//init Mainfield (Table pictue)
 	private void initMainfield(){
 		mainField = new JPanel();
-		mainField.setSize(200, 700);
+		mainField.setSize(300, 700);
 		mainField.setLayout(new FlowLayout());
 		mainField.setBackground(Color.DARK_GRAY);
 		mainField.setMinimumSize(new Dimension(768, 492));
@@ -231,7 +242,6 @@ private void initChat(){
 	
 	private void initButtonPanel(){
 		//init ButtonPanel
-		//TODO handle Button Size
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		buttonPanel.setBackground(Color.DARK_GRAY);
@@ -264,10 +274,27 @@ private void initChat(){
 	
 	public void paint(Graphics g){
 		super.paint(g);
-		final Toolkit tK = this.getToolkit();
+		final Toolkit tK = this.getToolkit();		
+		//draw PlayerTable
 		try {
-			mainImage = tK.getImage("/Users/fabianRedecker/Dropbox/Studium FR & CS/Prog2 Projekt/Projektdateien/workspace fabian/Grafics/Image/table_v2.png");
-			g.drawImage(mainImage,60,100, this);
+			mainImage = tK.getImage(this.getClass().getResource("/Images/table900x600.png"));
+			g.drawImage(mainImage,20,65, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}	
+		
+		//draw first PlayerCard (left Card)
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource(playerCardOne.getImage()));
+			g.drawImage(cardOne,400,530, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//draw second PlayerCard (rightCard)
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource(playerCardTwo.getImage()));
+			g.drawImage(cardTwo,470,530, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
 		}	
@@ -351,8 +378,10 @@ private void initChat(){
 	}
 	
 	public static void main(String[] args) {
+		Cards.createDeck();
 		/*MainWindow m =*/ new MainWindow(new Player(1,"BigF327", 2500, "password"));
-	
+		
+
 	}
 
 }
