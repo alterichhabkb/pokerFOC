@@ -20,6 +20,7 @@ public class Countdown {
 		timer = new Timer();
 		timerIcon = new JTextField();
 		timerIcon.setEditable(false);
+		timerIcon.setColumns(8);
 		timerIcon.setText("time befor fold" + seconds);
 	
 		

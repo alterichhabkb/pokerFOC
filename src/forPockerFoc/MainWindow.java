@@ -48,10 +48,11 @@ public class MainWindow extends JFrame {
 	private Image mainImage;
 	
 	//Timer
-	private Countdown countdown = new Countdown(5);
+	private Countdown countdown = new Countdown(120);
 	
 	//Buttons
 	private JTextField timer;
+	public static JTextField serverInfo;
 	private final JButton checkButton = new JButton("Check");
 	private final JButton callButton = new JButton("Call");
 	private final JButton betButton = new JButton("Bet");
@@ -119,8 +120,9 @@ public class MainWindow extends JFrame {
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		this.add(mainField, BorderLayout.CENTER);
 		this.add(eastSection, BorderLayout.EAST);
-		this.setSize(1150, 900);
-		//this.setResizable(false);
+		this.setSize(1150, 720);
+		//MainWindow is not resizable
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(windowVisible);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -234,10 +236,8 @@ public class MainWindow extends JFrame {
 	//init Mainfield (Table pictue)
 	private void initMainfield(){
 		mainField = new JPanel();
-		mainField.setSize(300, 700);
 		mainField.setLayout(new FlowLayout());
 		mainField.setBackground(Color.DARK_GRAY);
-		mainField.setMinimumSize(new Dimension(768, 492));
 		mainField.repaint();
 	}
 	
@@ -265,6 +265,11 @@ public class MainWindow extends JFrame {
 		betButton.addActionListener(new PlayerActivityHandler());
 		raiseButton.addActionListener(new PlayerActivityHandler());
 		foldButton.addActionListener(new PlayerActivityHandler());
+		//init static JTextField for Server information 
+		serverInfo = new JTextField();
+		serverInfo.setEditable(false);
+		serverInfo.setColumns(25);
+		buttonPanel.add(serverInfo);
 		buttonPanel.add(timer);
 		buttonPanel.add(checkButton);
 		buttonPanel.add(callButton);
@@ -287,7 +292,7 @@ public class MainWindow extends JFrame {
 		//draw first PlayerCard (left Card)
 		try {
 			Image cardOne = tK.getImage(this.getClass().getResource(playerCardOne.getImage()));
-			g.drawImage(cardOne,400,530, this);
+			g.drawImage(cardOne,400,545, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
 		}
@@ -295,10 +300,91 @@ public class MainWindow extends JFrame {
 		//draw second PlayerCard (rightCard)
 		try {
 			Image cardTwo = tK.getImage(this.getClass().getResource(playerCardTwo.getImage()));
-			g.drawImage(cardTwo,470,530, this);
+			g.drawImage(cardTwo,470,545, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
-		}	
+		}
+		
+		//Playerplace Hidden left one
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource("/cardImages/cardHidden90.png"));
+			g.drawImage(cardOne,50,300, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hiddem left two
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource("/cardImages/cardHidden90.png"));
+			g.drawImage(cardTwo,50,370, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hidden right one
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource("/cardImages/cardHidden90.png"));
+			g.drawImage(cardOne,792,300, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hiddem right two
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource("/cardImages/cardHidden90.png"));
+			g.drawImage(cardTwo,792,370, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hidden opposite one
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardOne,400,85, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hiddem opposite two
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardTwo,470,85, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hidden opposite left one
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardOne,180,150, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hiddem opposite right one
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardTwo,250,150, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hidden opposite right one
+		try {
+			Image cardOne = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardOne,620,150, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+		
+		//Playerplace Hiddem opposite right two
+		try {
+			Image cardTwo = tK.getImage(this.getClass().getResource("/cardImages/cardHidden.png"));
+			g.drawImage(cardTwo,690,150, this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
+		}
+			
 	}
 	
 	//getter + setter fpr own Player information (Jlabel)
@@ -378,9 +464,20 @@ public class MainWindow extends JFrame {
 		sendArea.setText(text);
 	}
 	
+	//getter + setter for server info
+	public static String getSeverInfo(){
+		String serverInfoText;
+		serverInfoText = serverInfo.getText();
+		return serverInfoText;
+	}
+	public static void setServerInfo(String text){
+		serverInfo.setText("Server: " +text);
+	}
+	
 	public static void main(String[] args) {
 		Cards.createDeck();
 		/*MainWindow m =*/ new MainWindow(new Player(1,"BigF327", 2500, "password"));
+		MainWindow.setServerInfo("Hello and welcome to FOCPoker");
 		
 
 	}
