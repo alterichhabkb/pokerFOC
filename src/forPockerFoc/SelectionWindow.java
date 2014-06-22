@@ -83,16 +83,15 @@ public class SelectionWindow extends JFrame {
 		super.paint(g);
 		final Toolkit tK = this.getToolkit();
 		try {
-			bild = tK.getImage("/Users/fabianRedecker/Dropbox/Studium FR & CS/Prog2 Projekt/Projektdateien/workspace fabian/Grafics/Image/selectionPic.jpg");
-			g.drawImage(bild,80,60, this);
+			bild = tK.getImage(this.getClass().getResource("/Images/selection244x226.png"));
+			g.drawImage(bild,25,10, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
 		}	
 	}
 	
 	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		SelectionWindow sW = new SelectionWindow();
+		new SelectionWindow();
 	}
 	
 

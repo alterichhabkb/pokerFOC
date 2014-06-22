@@ -88,7 +88,8 @@ public class LogInWindow extends JFrame {
 		super.paint(g);
 		final Toolkit tK = this.getToolkit();
 		try {
-			Image bild = tK.getImage("/Users/fabianRedecker/Dropbox/Studium FR & CS/Prog2 Projekt/Projektdateien/workspace fabian/Grafics/Image/selectionPic.jpg");
+			//Image bild = tK.getImage("/Users/fabianRedecker/Dropbox/Studium FR & CS/Prog2 Projekt/Projektdateien/workspace fabian/Grafics/Image/selectionPic.jpg");
+			Image bild = tK.getImage(this.getClass().getResource("/Images/login135x147White.png"));
 			g.drawImage(bild,80,60, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
@@ -158,8 +159,7 @@ public class LogInWindow extends JFrame {
 		                String sZeile;
 		                while ((sZeile = br.readLine()) != null) {
 		                    if(sZeile.contains(playerName) && sZeile.contains(playerPassword)){
-		                    	@SuppressWarnings("unused")//because its a Window
-								SuccessWindow sw = new SuccessWindow("Success", "Log in was successful", "OK");
+								new SuccessWindow("Success", "Log in was successful", "OK");
 		                    	init(false);
 		                    	check++;
 		                    	//TODO close window start Game

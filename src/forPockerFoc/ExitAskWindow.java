@@ -21,7 +21,7 @@ public class ExitAskWindow extends JFrame {
 	private static final long serialVersionUID = -1687758552316622804L;
 	
 	//JComponents
-	private JLabel windowText = new JLabel("Do you realy want to exit?");
+	private JLabel windowText = new JLabel("Do you really want to exit?");
 	private JLabel placeHolder = new JLabel("");
 	private JButton ok = new JButton("YES");
 	private JButton no = new JButton("NO");
@@ -82,15 +82,15 @@ public class ExitAskWindow extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);	
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	public void paint(Graphics g){
 		super.paint(g);
 		final Toolkit tK = this.getToolkit();
 		try {
-			Image mainImage = tK.getImage("/Users/fabianRedecker/Dropbox/Studium FR & CS/Prog2 Projekt/Projektdateien/workspace fabian/Grafics/Image/exit.png");
-			g.drawImage(mainImage,0,30, this);
+			Image mainImage = tK.getImage(this.getClass().getResource("/Images/exit128x128.png"));
+			g.drawImage(mainImage,5,22, this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Image Not Found", "Picture ERROR",JOptionPane.WARNING_MESSAGE);
 		}	
